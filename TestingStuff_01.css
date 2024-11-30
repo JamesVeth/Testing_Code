@@ -3,17 +3,19 @@
     border-radius: 3rem;
     display: grid;
     place-items: center;
+    grid-template-rows: 1fr 1fr 1fr;
     height: 100vh;
     border: 0.3rem solid black;
 
 }
 
+
+
 #gameCanvas{
     
     background-color: burlywood;
-    border: 0.3rem solid black;
-
-    margin: 20px;
+    height: 500px;
+    width: 500px;
     
 }
 
