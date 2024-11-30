@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #gameContainer{
+            text-align: center;
+        }
+        #gameBoard{
+            border: 3px solid;
+        }
+        #scoreText{
+            font-family: "Permanent Marker", cursive;
+            font-size: 100px;
+        }
+        #resetBtn{
+            font-family: "Permanent Marker", cursive;
+            font-size: 22px;
+            width: 100px;
+            height: 50px;
+            border: 4px solid;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameBoard" width="500" height="500"></canvas>
+        <div id="scoreText">0</div>
+        <button id="resetBtn">Reset</button>
+    </div>
+    <script>
+        const gameBoard = document.querySelector("#gameBoard");
+        const ctx = gameBoard.getContext("2d");
+        const scoreText = document.querySelector("#scoreText");
+        const resetBtn = document.querySelector("#resetBtn");
+        const gameWidth = gameBoard.width;
+        const gameHeight = gameBoard.height;
+        const boardBackground = "white";
+        const snakeColor = "lightgreen";
+        const snakeBorder = "black";
+        const foodColor = "red";
+        const unitSize = 25;
+        let running = false;
+        let xVelocity = unitSize;
+        let yVelocity = 0;
+        let foodX;
+        let foodY;
+        let score = 0;
+        let snake = [
+            {x:unitSize * 4, y:0},
+            {x:unitSize * 3, y:0},
+            {x:unitSize * 2, y:0},
+            {x:unitSize, y:0},
+            {x:0, y:0}
+        ];
+
+        window.addEventListener("keydown", changeDirection);
+        resetBtn.addEventListener("click", resetGame);
+
+        gameStart();
+
+        function gameStart(){
+            running= true;
+            scoreText.textContent = score;
+            createFood();
+            drawFood();
+            nextTick();
+        };
+        function nextTick(){
+            if(running){
+                setTimeout(()=>{
+                    clearBoard();
+                    drawFood();
+                    moveSnake();
+                    drawSnake();
+                    checkGameOver();
+                    nextTick();
+                }, 75);
+            }
+            else{
+                displayGameOver();
+            }
+        };
+        function clearBoard(){
+            ctx.fillStyle = boardBackground;
+            ctx.fillRect(0, 0, gameWidth, gameHeight);
+        };
+        function createFood(){
+            function randomFood(min, max){
+                const randNum = Math.round((Math.random() * (max - min) + min) / unitSize) * unitSize;
+                return randNum;
+            }
+            foodX = randomFood(0, gameWidth - unitSize);
+            foodY = randomFood(0, gameWidth - unitSize);
+        };
+        function drawFood(){
+            ctx.fillStyle = foodColor;
+            ctx.fillRect(foodX, foodY, unitSize, unitSize);
+        };
+        function moveSnake(){
+            const head = {x: snake[0].x + xVelocity,
+                        y: snake[0].y + yVelocity};
+            
+            snake.unshift(head);
+            //if food is eaten
+            if(snake[0].x == foodX && snake[0].y == foodY){
+                score+=1;
+                scoreText.textContent = score;
+                createFood();
+            }
+            else{
+                snake.pop();
+            }     
+        };
+        function drawSnake(){
+            ctx.fillStyle = snakeColor;
+            ctx.strokeStyle = snakeBorder;
+            snake.forEach(snakePart => {
+                ctx.fillRect(snakePart.x, snakePart.y, unitSize, unitSize);
+                ctx.strokeRect(snakePart.x, snakePart.y, unitSize, unitSize);
+            })
+        };
+        function changeDirection(event){
+            const keyPressed = event.keyCode;
+            const LEFT = 37;
+            const UP = 38;
+            const RIGHT = 39;
+            const DOWN = 40;
+
+            const goingUp = (yVelocity == -unitSize);
+            const goingDown = (yVelocity == unitSize);
+            const goingRight = (xVelocity == unitSize);
+            const goingLeft = (xVelocity == -unitSize);
+
+            switch(true){
+                case(keyPressed == LEFT && !goingRight):
+                    xVelocity = -unitSize;
+                    yVelocity = 0;
+                    break;
+                case(keyPressed == UP && !goingDown):
+                    xVelocity = 0;
+                    yVelocity = -unitSize;
+                    break;
+                case(keyPressed == RIGHT && !goingLeft):
+                    xVelocity = unitSize;
+                    yVelocity = 0;
+                    break;
+                case(keyPressed == DOWN && !goingUp):
+                    xVelocity = 0;
+                    yVelocity = unitSize;
+                    break;
+            }
+        };
+        function checkGameOver(){
+            switch(true){
+                case (snake[0].x < 0):
+                    running = false;
+                    break;
+                case (snake[0].x >= gameWidth):
+                    running = false;
+                    break;
+                case (snake[0].y < 0):
+                    running = false;
+                    break;
+                case (snake[0].y >= gameHeight):
+                        running = false;
+                        break;
+            }
+            for(let i = 1; i < snake.length; i+=1){
+                if(snake[i].x == snake[0].x && snake[i].y == snake[0].y){
+                    running = false;
+                }
+            }
+        };
+        function displayGameOver(){
+            ctx.font = "50px MV Boli";
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+            ctx.fillText("GAME OVER!", gameWidth / 2, gameHeight / 2);
+            running = false;
+        };
+        function resetGame(){
+            score = 0;
+            xVelocity = unitSize;
+            yVelocity = 0;
+            snake = [
+                {x:unitSize * 4, y:0},
+                {x:unitSize * 3, y:0},
+                {x:unitSize * 2, y:0},
+                {x:unitSize, y:0},
+                {x:0, y:0}
+            ];
+            gameStart();
+        };
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+<!-- 
+
+Notes
+
+// snake.unshift() - Adding a new object to our Snake array, and shifting the position of the others in the array
+
+const head = {x: snake[0].x + xVelocity, y: snake[0].y + yVelocity};
+This line creates a new object called head to represent the updated position of the snake's head.
+It uses the existing coordinates of the snake's head (snake[0].x and snake[0].y) and adds the xVelocity and yVelocity values to them, moving the head in the specified direction.
+2. Adding the new head to the snake:
+
+snake.unshift(head);
+This line uses the unshift() method to add the newly created head object to the beginning of the snake array.
+The unshift() method inserts an element at the beginning of an array, effectively shifting all other elements to the right.
+In simpler terms:
+
+The code calculates where the snake's head should be positioned next based on its current position and its velocity in both the X and Y directions.
+It then adds this new head position to the front of the snake's body, essentially making the snake move forward one step.
+Key points:
+
+The snake array likely holds a list of positions (coordinates) that represent the snake's body segments.
+The xVelocity and yVelocity variables control the direction and speed of the snake's movement.
+This code snippet would typically be part of a larger program that animates the snake's movement on a screen.
+
+// Math.random() - Creating a random spot to draw food
+
+Math.random(): This function generates a random decimal number between 0 (inclusive) and 1 (exclusive).
+(max - min): This part calculates the width of the desired range.
+Math.random() * (max - min): This multiplies the random decimal by the range width, resulting in a random decimal within the specified range.
+(Math.random() * (max - min)) + min: This adds the minimum value (min) to the random decimal, shifting it to the desired range.
+2. Rounding to a multiple of unitSize:
+
+Math.round(...) / unitSize: This divides the random number by unitSize and rounds the result to the nearest integer using Math.round(). This ensures the final number is a multiple of unitSize.
+Math.round(...) / unitSize) * unitSize: This multiplies the rounded number by unitSize to bring it back to the original scale.
+3. Assigning to a constant:
+
+const randNum =: This declares a constant variable named randNum and assigns the calculated value to it.
+In summary, this code does the following:
+
+Generates a random decimal number within the specified range (min to max).
+Rounds that number to the nearest multiple of unitSize.
+Stores the rounded number in the variable randNum.
+Example:
+
+If min = 10, max = 50, and unitSize = 5, the code would generate a random number that's a multiple of 5 between 10 and 50, such as 15, 25, 35, or 45.
+
+
+
+-->
+
