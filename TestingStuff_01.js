@@ -15,6 +15,8 @@ let foodY;
 let score = 0;
 let gameWidth = gameCanvas.getWidth;
 let gameHeight = gameCanvas.getHeight;
+let appleColor = "red";
+let snakeColor = "lightgreen";
 
 // Add Event Listeners (which esesentially run in a type of thread, continuously)
 buttonReset.addEventListener("click", gameStart);
@@ -80,14 +82,60 @@ function checkGameOver() {
 
 function drawFood(){
 
+    ctx.fillStyle("appleColor");
+    ctx.fillRect(foodX, foodY, unitSize, unitSize);
+
 }
 
 function drawSnake(){
 
 }
 
-function changeDirection() {
+function changeDirection(event) {
 
+    // const keyPressed = event.key;
+    
+    // const goingUp = (yVelocity == -unitSize);
+    // const goingDown = (yVelocity == unitSize);
+    // const goingLeft = (xVelocity == -unitSize);
+    // const goingRight = (xVelocity == unitSize);
+
+
+    // switch(keyPressed) {
+
+    //     case "ArrowUp" && !goingDown:
+    //         yVelocity = -unitSize;
+    //         xVelocity = 0; //ensure that all x movement is halted to 0
+    //         break;
+    // }
+
+    const keyPressed = event.key;
+
+    const goingUp = (yVelocity == -unitSize);
+    const goingDown = (yVelocity == unitSize);
+    const goingLeft = (xVelocity == -unitSize);
+    const goingRight = (xVelocity == unitSize);
+
+
+    switch(true) {
+
+        case (keyPressed == "ArrowUp" && !goingDown):
+            yVelocity = -unitSize;
+            break;
+        
+        case (keyPressed == "ArrowDown" && !goingUp):
+            yVelocity = unitSize;
+            break;
+        
+        case (keyPressed == "ArrowLeft" && !goingRight):
+            xVelocity = -unitSize;
+            break;
+        
+        case (keyPressed == "ArrowRight" && goingDown):
+            xVelocity = unitSize;
+            break;
+        
+    }
 
 }
 
