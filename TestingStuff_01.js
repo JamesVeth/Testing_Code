@@ -17,6 +17,7 @@ let gameWidth = gameCanvas.getWidth;
 let gameHeight = gameCanvas.getHeight;
 let appleColor = "red";
 let snakeColor = "lightgreen";
+let snakeBorder = "black";
 
 // Add Event Listeners (which esesentially run in a type of thread, continuously)
 buttonReset.addEventListener("click", gameStart);
@@ -82,12 +83,32 @@ function checkGameOver() {
 
 function drawFood(){
 
-    ctx.fillStyle("appleColor");
+    ctx.fillStyle(appleColor);
     ctx.fillRect(foodX, foodY, unitSize, unitSize);
-
+    
 }
 
 function drawSnake(){
+    
+    ctx.fillStyle(appleColor);
+    ctx.strokeStyle = snakeBorder;
+
+    //foreach creates a temporary object, called snakeSegment, of each of the objects in snake, and does a ctx.fillRect using each of the object's coordinates.
+    snake.forEach(snakeSegment=>{
+        ctx.fillRect(snakeSegment.x, snakeSegment.y, unitSize, unitSize);
+        ctx.strokeRect(snakeSegment.x, snakeSegment.y, unitSize, unitSize);
+    });
+
+    /*
+
+    ctx.fillStyle = snakeColor;
+    ctx.strokeStyle = snakeBorder;
+    snake.forEach(snakePart => {
+        ctx.fillRect(snakePart.x, snakePart.y, unitSize, unitSize);
+        ctx.strokeRect(snakePart.x, snakePart.y, unitSize, unitSize);
+    })
+
+    */
 
 }
 
