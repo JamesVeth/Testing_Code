@@ -7,17 +7,18 @@ const buttonReset = document.getElementById('buttonReset');
 
 
 let gameRunning = false;
-let unitSize = 25;
+const unitSize = 25;
 let xVelocity = unitSize;
 let yVelocity = 0;
 let foodX;
 let foodY;
 let score = 0;
-let gameWidth = gameCanvas.getWidth;
-let gameHeight = gameCanvas.getHeight;
-let appleColor = "red";
-let snakeColor = "lightgreen";
-let snakeBorder = "black";
+const gameWidth = gameCanvas.getWidth;
+const gameHeight = gameCanvas.getHeight;
+const appleColor = "red";
+const snakeColor = "lightgreen";
+const backgroundColor = "lightgrey";
+const snakeBorder = "black";
 
 // Add Event Listeners (which esesentially run in a type of thread, continuously)
 buttonReset.addEventListener("click", gameStart);
@@ -49,7 +50,7 @@ function randomFood(min, max) {
     // 7 * 25 = 175
     // So we draw at 175, which is a divisible of 25, so the piece doesn't overlap
 
-    let randNum = Math.round((Math.random() * (max - unitSize) / unitSize) * unitSize;
+    let randNum = Math.round((Math.random() * (max - unitSize) / unitSize)) * unitSize;
     return randNum;
 
 }
@@ -152,7 +153,7 @@ function changeDirection(event) {
             xVelocity = -unitSize;
             break;
         
-        case (keyPressed == "ArrowRight" && goingDown):
+        case (keyPressed == "ArrowRight" && !goingLeft):
             xVelocity = unitSize;
             break;
         
@@ -162,5 +163,7 @@ function changeDirection(event) {
 
 function displayGameOver(){
 
+    ctx.fillStyle(backgroundColor);
+    ctx.fillRect(0,0,ctx.clientWidth, ctx.clientHeight);
 
 }
