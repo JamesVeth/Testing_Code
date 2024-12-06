@@ -161,9 +161,21 @@ function changeDirection(event) {
 
 }
 
-function displayGameOver(){
+function clearBoard(){
 
     ctx.fillStyle(backgroundColor);
     ctx.fillRect(0,0,ctx.clientWidth, ctx.clientHeight);
 
+}
+
+function nextTick(){
+
+
+    
+}
+
+function moveSnake(){
+
+
+    
 }
