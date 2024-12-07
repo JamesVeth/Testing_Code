@@ -4,15 +4,16 @@ const ctx = gameCanvas.getContext('2d');
 const labelScore = document.getElementById('labelScore');
 const buttonReset = document.getElementById('buttonReset');
 
-
-
+// Starting variables
 let gameRunning = false;
-const unitSize = 25;
 let xVelocity = unitSize;
 let yVelocity = 0;
 let foodX;
 let foodY;
 let score = 0;
+
+// Static variables
+const unitSize = 25;
 const gameWidth = gameCanvas.getWidth;
 const gameHeight = gameCanvas.getHeight;
 const appleColor = "red";
@@ -20,15 +21,16 @@ const snakeColor = "lightgreen";
 const backgroundColor = "lightgrey";
 const snakeBorder = "black";
 
-// Add Event Listeners (which esesentially run in a type of thread, continuously)
+// Start the Event Listeners (which esesentially run in a type of thread, continuously)
 buttonReset.addEventListener("click", gameStart);
 gameCanvas.addEventListener("keydown", changeDirection);
 
+// Start the game
 gameStart();
 
-let snake = [
-    {x:unitSize*4,y:0},
-    {x:unitSize*3,y:0},
+let snake = [ // this is an array, that consists of 5 objects to start
+    {x:unitSize*4,y:0}, // this is the head, at snake [0]
+    {x:unitSize*3,y:0}, // the 
     {x:unitSize*2,y:0},
     {x:unitSize*1,y:0},
     {x:0,y:0}
@@ -60,8 +62,7 @@ function gameStart(){
     gameRunning = true;
     labelScore.textContent = score;
     createFood();
-    drawFood();
-    drawSnake();
+    nextTick();
 
 }
 
@@ -75,7 +76,6 @@ function resetGame(){
     {x:0,y:0};
     xVelocity = unitSize;
     yVelocity = 0;
-    // 
 }
 
 function checkGameOver() {
@@ -100,36 +100,10 @@ function drawSnake(){
         ctx.strokeRect(snakeSegment.x, snakeSegment.y, unitSize, unitSize);
     });
 
-    /*
-
-    ctx.fillStyle = snakeColor;
-    ctx.strokeStyle = snakeBorder;
-    snake.forEach(snakePart => {
-        ctx.fillRect(snakePart.x, snakePart.y, unitSize, unitSize);
-        ctx.strokeRect(snakePart.x, snakePart.y, unitSize, unitSize);
-    })
-
-    */
 
 }
 
 function changeDirection(event) {
-
-    // const keyPressed = event.key;
-    
-    // const goingUp = (yVelocity == -unitSize);
-    // const goingDown = (yVelocity == unitSize);
-    // const goingLeft = (xVelocity == -unitSize);
-    // const goingRight = (xVelocity == unitSize);
-
-
-    // switch(keyPressed) {
-
-    //     case "ArrowUp" && !goingDown:
-    //         yVelocity = -unitSize;
-    //         xVelocity = 0; //ensure that all x movement is halted to 0
-    //         break;
-    // }
 
     const keyPressed = event.key;
 
@@ -157,7 +131,7 @@ function changeDirection(event) {
             xVelocity = unitSize;
             break;
         
-    }
+    }   
 
 }
 
@@ -169,13 +143,32 @@ function clearBoard(){
 }
 
 function nextTick(){
+    if(running){
+        // main game loop
+        setTimeout(()=>{
 
+            clearBoard(); // 1. Clear the board entirely before drawing the next frame
+            drawFood(); // 2. Draw the food next, fillstyle and fillrect commands
+            moveSnake(); // 3. Move the snake and determine if it has eaten or not, if it doesn't you pop the last snake part
+            drawSnake(); // 4. Simple draw snake function, fillstyle and fillrect commands
+            checkGameOver(); // 5. Check if the snake has collided with its self or the boundaries
+            nextTick(); // 6. <--------- Recursively call this same function, which cycles the game loop, until running == false.
+        }, 75); // 7. Pause for 75ms, before running this again
 
-    
+    } else {
+        displayGameOver(); // If the game isn't running, it's in a game over state
+    } 
 }
 
 function moveSnake(){
 
+    const head = {x:snake[0].x,}
+    
+}
 
+function displayGameOver(){
+
+    clearBoard();
+    ctx.fillStyle(appleColor);
     
 }
