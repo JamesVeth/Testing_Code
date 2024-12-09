@@ -8,10 +8,10 @@
     border: 0.3rem solid black;
 }
 
-#gameCanvas{   
-    background-color: burlywood;
-    height: 500px;
-    width: 500px;
+#gameCanvas{
+    
+    border: 3px solid;
+
 }
 
 #labelScore{

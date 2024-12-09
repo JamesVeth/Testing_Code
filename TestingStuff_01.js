@@ -1,8 +1,16 @@
-const gameArea = document.getElementById('gameArea');
-const gameCanvas = document.getElementById('gameCanvas');
+const gameCanvas = document.querySelector("#gameCanvas");
 const ctx = gameCanvas.getContext('2d');
-const labelScore = document.getElementById('labelScore');
-const buttonReset = document.getElementById('buttonReset');
+const labelScore = document.querySelector("#labelScore");
+const buttonReset = document.querySelector("#buttonReset");
+
+// Static variables
+const gameWidth = gameCanvas.width;
+const gameHeight = gameCanvas.height;
+const backgroundColor = "white";
+const appleColor = "red";
+const snakeColor = "lightgreen";
+const snakeBorder = "black";
+const unitSize = 25;
 
 // Starting variables
 let running = false;
@@ -12,21 +20,6 @@ let foodX;
 let foodY;
 let score = 0;
 
-// Static variables
-const unitSize = 25;
-const gameWidth = gameCanvas.getWidth;
-const gameHeight = gameCanvas.getHeight;
-const appleColor = "red";
-const snakeColor = "lightgreen";
-const backgroundColor = "lightgrey";
-const snakeBorder = "black";
-
-// Start the Event Listeners (which esesentially run in a type of thread, continuously)
-buttonReset.addEventListener("click", resetGame);
-gameCanvas.addEventListener("keydown", changeDirection);
-
-displayGameStart();
-
 let snake = [ // this is an array, that consists of 5 objects to start
     {x:unitSize*4,y:0}, // this is the head, at snake [0]
     {x:unitSize*3,y:0}, // the 
@@ -35,12 +28,53 @@ let snake = [ // this is an array, that consists of 5 objects to start
     {x:0,y:0}
 ]
 
-ctx.fillStyle = "lightgreen";
-ctx.fillRect(0,0,gameCanvas.clientWidth,gameCanvas.clientHeight);
+// Start the Event Listeners (which esesentially run in a type of thread, continuously)
+window.addEventListener("keydown", changeDirection);
+buttonReset.addEventListener("click", resetGame);
+
+
+displayGameOver();
+
+function gameStart(){
+    
+    running = true;
+    labelScore.textContent = score;
+    createFood();
+    drawFood();
+    nextTick();
+
+}
+
+function nextTick(){
+    if(running){
+        // main game loop
+        setTimeout(()=>{
+
+            clearBoard(); // 1. Clear the board entirely before drawing the next frame
+            drawFood(); // 2. Draw the food next, fillstyle and fillrect commands
+            moveSnake(); // 3. Move the snake and determine if it has eaten or not, if it doesn't you pop the last snake part
+            drawSnake(); // 4. Simple draw snake function, fillstyle and fillrect commands
+            checkGameOver(); // 5. Check if the snake has collided with its self or the boundaries
+            nextTick(); // 6. <--------- Recursively call this same function, which cycles the game loop, until running == false.
+        }, 75); // 7. Pause for 75ms, before running this again
+
+    } else {
+        displayGameOver(); // If the game isn't running, it's in a game over state
+    } 
+}
+
+function displayGameOver(){
+    ctx.font = "50px MV Boli";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.fillText("GAME OVER!", gameWidth / 2, gameHeight / 2);
+    running = false;
+    clearBoard();
+};
 
 function createFood(){
     foodX = randomFood(0, gameWidth-unitSize); // 0 - 475
-    foodY = randomFood(0, gameWidth-unitSize); // 0 - 475
+    foodY = randomFood(0, gameHeight-unitSize); // 0 - 475
 }
 
 function randomFood(min, max) {
@@ -51,19 +85,11 @@ function randomFood(min, max) {
     // 7 * 25 = 175
     // So we draw at 175, which is a divisible of 25, so the piece doesn't overlap
 
-    let randNum = Math.round((Math.random() * (max - unitSize) / unitSize)) * unitSize;
+    let randNum = Math.floor((Math.random() * (max - min) / unitSize)) * unitSize + min;
     return randNum;
 
 }
 
-function gameStart(){
-    
-    running = true;
-    labelScore.textContent = score;
-    createFood();
-    nextTick();
-
-}
 
 
 function resetGame(){
@@ -101,7 +127,7 @@ function checkGameOver() {
 
     // For loop to check if snake head is touching its body
     // start checking from 1 because the head is 0
-    for(let i = 1; i < snake.length(); i+=1){
+    for(let i = 1; i < snake.length; i+=1){
         if (snake[0].x == snake[i].x && snake[0].y == snake[i].y){
             running = false;
         }
@@ -113,14 +139,14 @@ function checkGameOver() {
 
 function drawFood(){
 
-    ctx.fillStyle(appleColor);
+    ctx.fillStyle = appleColor;
     ctx.fillRect(foodX, foodY, unitSize, unitSize);
     
 }
 
 function drawSnake(){
     
-    ctx.fillStyle(appleColor);
+    ctx.fillStyle = snakeColor;
     ctx.strokeStyle = snakeBorder;
 
     //foreach creates a temporary object, called snakeSegment, of each of the objects in snake, and does a ctx.fillRect using each of the object's coordinates.
@@ -166,28 +192,12 @@ function changeDirection(event) {
 
 function clearBoard(){
 
-    ctx.fillStyle(backgroundColor);
-    ctx.fillRect(0,0,ctx.clientWidth, ctx.clientHeight);
+    ctx.fillStyle = backgroundColor;
+    ctx.fillRect(0,0,gameWidth,gameHeight);
 
 }
 
-function nextTick(){
-    if(running){
-        // main game loop
-        setTimeout(()=>{
 
-            clearBoard(); // 1. Clear the board entirely before drawing the next frame
-            drawFood(); // 2. Draw the food next, fillstyle and fillrect commands
-            moveSnake(); // 3. Move the snake and determine if it has eaten or not, if it doesn't you pop the last snake part
-            drawSnake(); // 4. Simple draw snake function, fillstyle and fillrect commands
-            checkGameOver(); // 5. Check if the snake has collided with its self or the boundaries
-            nextTick(); // 6. <--------- Recursively call this same function, which cycles the game loop, until running == false.
-        }, 75); // 7. Pause for 75ms, before running this again
-
-    } else {
-        displayGameOver(); // If the game isn't running, it's in a game over state
-    } 
-}
 
 function moveSnake(){
 
@@ -227,18 +237,5 @@ function moveSnake(){
     
 }
 
-function displayGameOver(){
-    ctx.font = "50px MV Boli";
-    ctx.fillStyle = "black";
-    ctx.textAlign = "center";
-    ctx.fillText("GAME OVER!", gameWidth / 2, gameHeight / 2);
-    running = false;
-};
 
-function displayGameStart(){
-    ctx.font = "50px MV Boli";
-    ctx.fillStyle = "black";
-    ctx.textAlign = "center";
-    ctx.fillText("Snake Game!", gameWidth / 2, gameHeight / 2);
-    running = false;
-}
+
