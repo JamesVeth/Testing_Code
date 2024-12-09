@@ -5,7 +5,7 @@ const labelScore = document.getElementById('labelScore');
 const buttonReset = document.getElementById('buttonReset');
 
 // Starting variables
-let gameRunning = false;
+let running = false;
 let xVelocity = unitSize;
 let yVelocity = 0;
 let foodX;
@@ -22,11 +22,10 @@ const backgroundColor = "lightgrey";
 const snakeBorder = "black";
 
 // Start the Event Listeners (which esesentially run in a type of thread, continuously)
-buttonReset.addEventListener("click", gameStart);
+buttonReset.addEventListener("click", resetGame);
 gameCanvas.addEventListener("keydown", changeDirection);
 
-// Start the game
-gameStart();
+displayGameStart();
 
 let snake = [ // this is an array, that consists of 5 objects to start
     {x:unitSize*4,y:0}, // this is the head, at snake [0]
@@ -59,7 +58,7 @@ function randomFood(min, max) {
 
 function gameStart(){
     
-    gameRunning = true;
+    running = true;
     labelScore.textContent = score;
     createFood();
     nextTick();
@@ -69,16 +68,46 @@ function gameStart(){
 
 function resetGame(){
     score = 0;
-    snake = {x:unitSize*4,y:0},
+    xVelocity = unitSize;
+    yVelocity = 0;
+
+    snake = [{x:unitSize*4,y:0},
     {x:unitSize*3,y:0},
     {x:unitSize*2,y:0},
     {x:unitSize*1,y:0},
-    {x:0,y:0};
-    xVelocity = unitSize;
-    yVelocity = 0;
+    {x:0,y:0}];
+    
+    gameStart();
+
 }
 
 function checkGameOver() {
+
+    switch(true){
+
+        case (snake[0].x < 0):
+            running = false;
+            break;
+        case (snake[0].x >= gameWidth):
+            running = false;
+            break;
+        case (snake[0].y < 0):
+            running = false;
+            break;
+        case (snake[0].y >= gameHeight):
+            running = false;
+            break;     
+    }
+
+    // For loop to check if snake head is touching its body
+    // start checking from 1 because the head is 0
+    for(let i = 1; i < snake.length(); i+=1){
+        if (snake[0].x == snake[i].x && snake[0].y == snake[i].y){
+            running = false;
+        }
+
+    }
+    
 
 }
 
@@ -162,13 +191,54 @@ function nextTick(){
 
 function moveSnake(){
 
-    const head = {x:snake[0].x,}
+    const head = {x:snake[0].x, 
+                    y:snake[0].y}
+    
+    /*
+
+    Arrays: Shift, Unshift, Push and Pop
+    
+    First Element:
+    Unshift: Adds an element to the first element of the array and returns the new size of the array
+    Shift: Removes an element from the first element of the array and returns the element it took
+    
+    Last Element:
+    Push: Adds an element to the last element of the array and returns the new size of the array
+    Pop: Removes an element from the last element of the array and returns the element it took
+
+    First use an unshift to add the next head to the snake to give
+    the impression it is moving by one piece
+    
+    Then check if it has touched a food and update score, etc
+
+    If it hasn't eaten pop the end off the tail, if you don't do this
+    the snake array would just keep growing infinitely
+    */
+    snake.unshift(head); //essentially we are overlapping the snake head here
+
+    if(snake[0].x == foodX && snake[0].y == foodY) {
+        score+=1; // remember to use = operator because we are assigning to score
+        labelScore.textContent = score;
+        createFood(); // generate and draw the next food location
+        
+    } else {
+        snake.pop(); // remove last element of snake, and return value
+    }
     
 }
 
 function displayGameOver(){
+    ctx.font = "50px MV Boli";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.fillText("GAME OVER!", gameWidth / 2, gameHeight / 2);
+    running = false;
+};
 
-    clearBoard();
-    ctx.fillStyle(appleColor);
-    
+function displayGameStart(){
+    ctx.font = "50px MV Boli";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.fillText("Snake Game!", gameWidth / 2, gameHeight / 2);
+    running = false;
 }

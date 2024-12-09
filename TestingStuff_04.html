@@ -62,7 +62,7 @@
         window.addEventListener("keydown", changeDirection);
         resetBtn.addEventListener("click", resetGame);
 
-        gameStart();
+        displayGameStart();
 
         function gameStart(){
             running= true;
@@ -158,6 +158,7 @@
                     break;
             }
         };
+        
         function checkGameOver(){
             switch(true){
                 case (snake[0].x < 0):
@@ -179,6 +180,7 @@
                 }
             }
         };
+
         function displayGameOver(){
             ctx.font = "50px MV Boli";
             ctx.fillStyle = "black";
@@ -186,6 +188,15 @@
             ctx.fillText("GAME OVER!", gameWidth / 2, gameHeight / 2);
             running = false;
         };
+
+        function displayGameStart(){
+            ctx.font = "50px MV Boli";
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+            ctx.fillText("Snake Game!", gameWidth / 2, gameHeight / 2);
+            running = false;
+        }
+
         function resetGame(){
             score = 0;
             xVelocity = unitSize;
