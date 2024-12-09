@@ -19,6 +19,7 @@ let yVelocity = 0;
 let foodX;
 let foodY;
 let score = 0;
+let gameLoopId;
 
 let snake = [ // this is an array, that consists of 5 objects to start
     {x:unitSize*4,y:0}, // this is the head, at snake [0]
@@ -48,7 +49,7 @@ function gameStart(){
 function nextTick(){
     if(running){
         // main game loop
-        setTimeout(()=>{
+        gameLoopId = setTimeout(()=>{
 
             clearBoard(); // 1. Clear the board entirely before drawing the next frame
             drawFood(); // 2. Draw the food next, fillstyle and fillrect commands
@@ -93,6 +94,7 @@ function randomFood(min, max) {
 
 
 function resetGame(){
+    clearTimeout(gameLoopId);
     score = 0;
     xVelocity = unitSize;
     yVelocity = 0;
