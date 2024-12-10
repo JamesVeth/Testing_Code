@@ -1,0 +1,17 @@
+#divFrame{
+    background-color: blueviolet;
+    
+}
+
+#canvasGame, #buttonStart {
+    background-color:antiquewhite;
+
+
+}
+
+#divScore, #buttonStart {
+    font-size: 2rem;
+
+}
+
+
