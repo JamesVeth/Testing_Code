@@ -1,10 +1,10 @@
 #divFrame{
     background-color: blueviolet;
-    
+    display: grid;
+    justify-content: center;
 }
 
-#canvasGame, #buttonStart {
-    background-color:antiquewhite;
+#canvasGame {
 
 
 }
@@ -14,4 +14,8 @@
 
 }
 
+#buttonStart {
+    cursor: pointer;
+    background-color: antiquewhite;
 
+}
