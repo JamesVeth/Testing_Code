@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        
         #divFrame{
-            background-color: rgb(91, 88, 94);
-            display: grid;
-            justify-items: center;
+        background-color: rgb(91, 88, 94);
+        display: grid;
+        justify-items: center;
         }
 
         #canvasGame {
@@ -18,21 +19,26 @@
 
         #divScore, #buttonStart {
             font-size: 2rem;
+
         }
 
         #buttonStart {
             cursor: pointer;
             background-color: antiquewhite;
+
         }
+
     </style>
 </head>
 <body>
 
-    <div id="divFrame">
-        <canvas id="canvasGame" height="500" width="500"></canvas>
-        <div id="divScore">0</div>
-        <button id="buttonStart">Start / Reset</button>
+    <div id = "divFrame">
+        <canvas id = "canvasGame" height="500" width="500"></canvas>
+        <div id = "divScore">0</div>
+        <button id = "buttonStart">Start / Reset</button>
     </div>
+
+    <!-- <script src="TestGame_01.js"></script> -->
 
     <script>
 
@@ -43,18 +49,17 @@
 
         const unitSize = 25;
 
-        let gameRunning = false;
         let gameLoopId;
         let running = false;
         let snake = [ // Each element of the snake array = Object
-            {x:unitSize * 4, y: 0}, // Head
-            {x:unitSize * 3, y: 0},
-            {x:unitSize * 2, y: 0},
-            {x:unitSize * 1, y: 0},
-            {x: 0, y: 0}
+            {x:unitSize*4, y:0}, // Head
+            {x:unitSize*3, y:0},
+            {x:unitSize*2, y:0},
+            {x:unitSize*1, y:0},
+            {x:0, y:0}
         ];
 
-        let xVelocity = unitSize;
+        let xVelocity = 25;
         let yVelocity = 0;
 
         let gameWidth = canvasGame.width;
@@ -62,86 +67,75 @@
 
         buttonGame.addEventListener("click", gameStart);
 
+        // console.log(snake[0]);
         const snakeColor = "lightgreen";
         const appleColor = "red";
         const borderColor = "black";
         const backgroundColour = "lightgrey";
 
-        function resetGame() {
-            // Reset snake position and movement direction
-            snake = [
-                {x: unitSize * 4, y: 0}, // Head
-                {x: unitSize * 3, y: 0},
-                {x: unitSize * 2, y: 0},
-                {x: unitSize * 1, y: 0},
-                {x: 0, y: 0}
-            ];
-
+        function resetGame(){
             xVelocity = unitSize;
             yVelocity = 0;
 
-            // Reset the game state and score
-            divScore.textContent = 0;
-            running = true;
-            clearTimeout(gameLoopId); // Stop any existing game loop
+            running = false;
+            clearTimeout(gameLoopId); // clear the timeout, prevents it from repeatedly running when game starts
+            gameStart();
+        }
 
-            // Clear the canvas and draw the initial snake
-            clearBoard();
-            drawSnake();
+        function moveSnake(){
+            for(let i = 0; i < snake.length; i++){
+                snake[i].x += unitSize;
+                snake[i].y += 0;
+            }
+        }
+
+        function gameStart(){
+            gameRunning = true;
             nextTick();
         }
 
-        function moveSnake() {
-            // Move each segment of the snake
-            for (let i = snake.length - 1; i > 0; i--) {
-                snake[i].x = snake[i - 1].x;
-                snake[i].y = snake[i - 1].y;
-            }
-            snake[0].x += xVelocity;
-            snake[0].y += yVelocity;
-        }
+        function nextTick(){
 
-        function gameStart() {
-            // If the game is already running, reset it
-            if (!running) {
-                resetGame();
+            if (running){
+                gameLoopId = setTimeout(()=>{
+                    clearBoard(); // clear frame before drawing
+                    moveSnake();
+                    drawSnake();
+                    checkGameOver();
+                    nextTick(); // recursion
+                },75);
             }
         }
 
-        function nextTick() {
-            if (running) {
-                gameLoopId = setTimeout(() => {
-                    clearBoard(); // Clear frame before drawing
-                    moveSnake(); // Move the snake
-                    drawSnake(); // Draw the updated snake
-                    checkGameOver(); // Check for game over
-                    nextTick(); // Recursively call nextTick for the game loop
-                }, 100);
-            }
-        }
+        function drawSnake(){
 
-        function drawSnake() {
-            ctx.fillStyle = snakeColor;
-            snake.forEach(snakeObject => {
-                ctx.fillRect(snakeObject.x, snakeObject.y, unitSize, unitSize);
-                ctx.strokeRect(snakeObject.x, snakeObject.y, unitSize, unitSize);
+            ctx.fillStyle = "snakeColor";
+            snake.forEach(snakeObjectElementParameter => {
+                ctx.fillRect(snakeObjectElementParameter.x, snakeObjectElementParameter.y, unitSize, unitSize);
+                ctx.strokeRect(snakeObjectElementParameter.x, snakeObjectElementParameter.y, unitSize, unitSize);
             });
         }
 
+        function drawFood(){
+
+        }
+
+        function createFood(){
+
+        }
+
         function checkGameOver() {
-            // Simple game-over check: if the snake goes out of bounds
-            if (snake[0].x >= gameWidth || snake[0].y >= gameHeight || snake[0].x < 0 || snake[0].y < 0) {
-                alert("Game Over!");
-                resetGame();
-            }
+
         }
 
         function clearBoard() {
-            ctx.fillStyle = backgroundColour;
+
+            ctx.fillStyle = "backgroundColour";
             ctx.fillRect(0, 0, gameWidth, gameHeight);
+
         }
 
     </script>
-
+    
 </body>
 </html>
