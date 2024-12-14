@@ -44,10 +44,92 @@
 
         const canvasGame = document.querySelector("#canvasGame");
         const divScore = document.querySelector("#divScore");
-        const buttonGame = document.querySelector("#buttonStart");
+        const buttonStart = document.querySelector("#buttonStart");
         const ctx = canvasGame.getContext('2d');
 
+        let snakeColor = "lightgreen";
+        let appleColor = "red";
+        let boardColor = "lightgrey";
+        let borderColor = "black";
+
         const unitSize = 25;
+
+        let xVelocity = 0;
+        let yVelocity = 25;
+
+        let gameWidth = canvasGame.width;
+        let gameHeight = canvasGame.height;
+
+        let snake = [
+            {x:0, y:4},
+            {x:0, y:3},
+            {x:0, y:2},
+            {x:0, y:1},
+            {x:0, y:0}
+        ];
+        let loopID;
+
+        let running = false;
+        
+        buttonStart.addEventListener("click", gameStart);
+
+        function gameStart(){
+            running = true;
+            nextTick();
+        }
+
+        function nextTick() {
+            if(running) {
+                loopID = setTimeout(()=>{
+                    clearBoard();
+                    moveSnake();
+                    drawSnake();
+                    nextTick();
+                }, 75);
+            }
+        }
+
+        function moveSnake(){
+
+            for(let i = 0; i < snake.length; i++){
+                snake[i].x += 0;
+                snake[i].y += unitSize;
+            }
+
+/*          // Start from the tail and update each segment to follow the one before it
+            for (let i = snake.length - 1; i > 0; i--) {
+                snake[i].x = snake[i - 1].x; // Each segment takes the x position of the one in front
+                snake[i].y = snake[i - 1].y; // Each segment takes the y position of the one in front
+            }
+
+            // Move the head of the snake independently
+            snake[0].x += 0;          // No change in x-axis (moving down)
+            snake[0].y += unitSize;   // Move the head down by unitSize */
+
+        }
+
+        function drawSnake(){
+            ctx.fillStyle = snakeColor;
+            snake.forEach(snakeElement=>{
+                ctx.fillRect(snakeElement.x, snakeElement.y, unitSize, unitSize);
+                ctx.strokeRect(snakeElement.x, snakeElement.y, unitSize, unitSize);
+            })
+        }
+
+        function clearBoard(){
+            ctx.fillStyle = boardColor;
+            ctx.fillRect(0,0,gameWidth, gameHeight);
+
+        }
+
+
+        
+        
+
+
+
+
+        /* const unitSize = 25;
 
         let gameLoopId;
         let running = false;
@@ -71,15 +153,20 @@
         const snakeColor = "lightgreen";
         const appleColor = "red";
         const borderColor = "black";
-        const backgroundColour = "lightgrey";
+        const backgroundColour = "white";
 
         function resetGame(){
             xVelocity = unitSize;
             yVelocity = 0;
-
+            snake = [ // Each element of the snake array = Object
+            {x:unitSize*4, y:0}, // Head
+            {x:unitSize*3, y:0},
+            {x:unitSize*2, y:0},
+            {x:unitSize*1, y:0},
+            {x:0, y:0}
+            ];
             running = false;
             clearTimeout(gameLoopId); // clear the timeout, prevents it from repeatedly running when game starts
-            gameStart();
         }
 
         function moveSnake(){
@@ -90,12 +177,11 @@
         }
 
         function gameStart(){
-            gameRunning = true;
+            running = true;
             nextTick();
         }
 
         function nextTick(){
-
             if (running){
                 gameLoopId = setTimeout(()=>{
                     clearBoard(); // clear frame before drawing
@@ -109,7 +195,7 @@
 
         function drawSnake(){
 
-            ctx.fillStyle = "snakeColor";
+            ctx.fillStyle = snakeColor;
             snake.forEach(snakeObjectElementParameter => {
                 ctx.fillRect(snakeObjectElementParameter.x, snakeObjectElementParameter.y, unitSize, unitSize);
                 ctx.strokeRect(snakeObjectElementParameter.x, snakeObjectElementParameter.y, unitSize, unitSize);
@@ -117,7 +203,7 @@
         }
 
         function drawFood(){
-
+            
         }
 
         function createFood(){
@@ -130,10 +216,10 @@
 
         function clearBoard() {
 
-            ctx.fillStyle = "backgroundColour";
+            ctx.fillStyle = backgroundColour;
             ctx.fillRect(0, 0, gameWidth, gameHeight);
 
-        }
+        } */
 
     </script>
     
