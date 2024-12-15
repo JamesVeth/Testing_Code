@@ -61,10 +61,10 @@
         let gameHeight = canvasGame.height;
 
         let snake = [
-            {x:0, y:4},
-            {x:0, y:3},
-            {x:0, y:2},
-            {x:0, y:1},
+            {x:0, y:4*unitSize},
+            {x:0, y:3*unitSize},
+            {x:0, y:2*unitSize},
+            {x:0, y:1*unitSize},
             {x:0, y:0}
         ];
         let loopID;
@@ -95,6 +95,26 @@
                 snake[i].x += 0;
                 snake[i].y += unitSize;
             }
+
+            /* 0, <5, 0
+            x = 0 always
+            y = 25,
+            */
+
+            /* 
+            Array Notes:
+            
+            Snake.length
+            
+            it should be i < snake.length, because arrays start at 0, therefore 
+            it's doing 0, 1, 2, 3, 4 (for a an array size of 5)
+            Therefore, if you had done i <= snake.length it would have been 0, 1, 2, 3, 4, 5
+            There's nothing in 5, so that would have been erroneous.
+
+            When does i++ increment?
+            The i++ increments after the code inside the loop runs, but before the next iteration begins.
+            
+            */
 
 /*          // Start from the tail and update each segment to follow the one before it
             for (let i = snake.length - 1; i > 0; i--) {
