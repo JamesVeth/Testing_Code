@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        
         #divFrame{
         background-color: rgb(91, 88, 94);
         display: grid;
@@ -19,15 +18,12 @@
 
         #divScore, #buttonStart {
             font-size: 2rem;
-
         }
 
         #buttonStart {
             cursor: pointer;
             background-color: antiquewhite;
-
         }
-
     </style>
 </head>
 <body>
@@ -37,8 +33,6 @@
         <div id = "divScore">0</div>
         <button id = "buttonStart">Start / Reset</button>
     </div>
-
-    <!-- <script src="TestGame_01.js"></script> -->
 
     <script>
 
@@ -54,8 +48,8 @@
 
         const unitSize = 25;
 
-        let xVelocity = 0;
-        let yVelocity = 25;
+        let xVelocity = 25;
+        let yVelocity = 0;
 
         let gameWidth = canvasGame.width;
         let gameHeight = canvasGame.height;
@@ -71,7 +65,8 @@
 
         let running = false;
         
-        buttonStart.addEventListener("click", gameStart);
+        buttonStart.addEventListener("click", resetGame);
+        window.addEventListener("keydown", checkMovement);
 
         function gameStart(){
             running = true;
@@ -84,47 +79,64 @@
                     clearBoard();
                     moveSnake();
                     drawSnake();
+                    checkGameOver();
                     nextTick();
                 }, 75);
+            } else {
+                resetGame();
             }
+        }
+
+        function displayGameOver(){
+
+            running = false;
+            clearBoard();
+            
         }
 
         function moveSnake(){
 
+
+            
+        }
+
+        function checkMovement(event){
+
+            const keyPressed = event.key;
+            // Booleans
+            const goingUp = (yVelocity == -unitSize);
+            const goingDown = (yVelocity == unitSize);
+            const goingLeft = (xVelocity == -unitSize);
+            const goingRight = (xVelocity == unitSize);
+            
+            switch(true) {
+
+                case (keyPressed == "ArrowUp" && !goingDown):
+                    yVelocity = -unitSize;
+                    xVelocity = 0;
+                    break;
+
+                case (keyPressed == "ArrowDown" && !goingUp):
+                    yVelocity = unitSize;
+                    xVelocity = 0;
+                    break;
+
+                case (keyPressed == "ArrowLeft" && !goingRight):
+                    xVelocity = -unitSize;
+                    yVelocity = 0;
+                    break;
+
+                case (keyPressed == "ArrowRight" && !goingLeft):
+                    xVelocity = unitSize;
+                    yVelocity = 0;
+                    break;
+                
+            }
+            
             for(let i = 0; i < snake.length; i++){
-                snake[i].x += 0;
-                snake[i].y += unitSize;
+                snake[i].x += xVelocity;
+                snake[i].y += yVelocity;
             }
-
-            /* 0, <5, 0
-            x = 0 always
-            y = 25,
-            */
-
-            /* 
-            Array Notes:
-            
-            Snake.length
-            
-            it should be i < snake.length, because arrays start at 0, therefore 
-            it's doing 0, 1, 2, 3, 4 (for a an array size of 5)
-            Therefore, if you had done i <= snake.length it would have been 0, 1, 2, 3, 4, 5
-            There's nothing in 5, so that would have been erroneous.
-
-            When does i++ increment?
-            The i++ increments after the code inside the loop runs, but before the next iteration begins.
-            
-            */
-
-/*          // Start from the tail and update each segment to follow the one before it
-            for (let i = snake.length - 1; i > 0; i--) {
-                snake[i].x = snake[i - 1].x; // Each segment takes the x position of the one in front
-                snake[i].y = snake[i - 1].y; // Each segment takes the y position of the one in front
-            }
-
-            // Move the head of the snake independently
-            snake[0].x += 0;          // No change in x-axis (moving down)
-            snake[0].y += unitSize;   // Move the head down by unitSize */
 
         }
 
@@ -133,7 +145,7 @@
             snake.forEach(snakeElement=>{
                 ctx.fillRect(snakeElement.x, snakeElement.y, unitSize, unitSize);
                 ctx.strokeRect(snakeElement.x, snakeElement.y, unitSize, unitSize);
-            })
+            });
         }
 
         function clearBoard(){
@@ -142,11 +154,54 @@
 
         }
 
+        function resetGame(){
 
+            clearTimeout(loopID);
+            let xVelocity = 25;
+            let yVelocity = 0;
+
+            let snake = [
+                {x:0, y:4*unitSize},
+                {x:0, y:3*unitSize},
+                {x:0, y:2*unitSize},
+                {x:0, y:1*unitSize},
+                {x:0, y:0}
+            ];
+            
+            gameStart();
+
+        }
+
+        function checkGameOver(){
+
+            switch(true){
+
+                case (snake[0].x < 0):
+                    running = false;
+                    break;
+                case (snake[0].y < 0):
+                    running = false;
+                    break;
+                case (snake[0].x > gameWidth):
+                    running = false;
+                    break;
+                case (snake[0].y > gameHeight):
+                    running = false;
+                    break;
+                
+            }
+            
+        }
         
-        
 
 
+    </script>
+    
+</body>
+</html>
+
+
+<!-- 
 
 
         /* const unitSize = 25;
@@ -241,7 +296,36 @@
 
         } */
 
-    </script>
-    
-</body>
-</html>
+                    /* 0, <5, 0
+            x = 0 always
+            y = 25,
+            */
+
+            /* 
+            Array Notes:
+            
+            Snake.length
+            
+            it should be i < snake.length, because arrays start at 0, therefore 
+            it's doing 0, 1, 2, 3, 4 (for a an array size of 5)
+            Therefore, if you had done i <= snake.length it would have been 0, 1, 2, 3, 4, 5
+            There's nothing in 5, so that would have been erroneous.
+
+            When does i++ increment?
+            The i++ increments after the code inside the loop runs, but before the next iteration begins.
+            
+            */
+
+/*          // Start from the tail and update each segment to follow the one before it
+            for (let i = snake.length - 1; i > 0; i--) {
+                snake[i].x = snake[i - 1].x; // Each segment takes the x position of the one in front
+                snake[i].y = snake[i - 1].y; // Each segment takes the y position of the one in front
+            }
+
+            // Move the head of the snake independently
+            snake[0].x += 0;          // No change in x-axis (moving down)
+            snake[0].y += unitSize;   // Move the head down by unitSize */
+
+
+
+-->
