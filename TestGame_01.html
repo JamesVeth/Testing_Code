@@ -31,6 +31,10 @@
     <div id = "divFrame">
         <canvas id = "canvasGame" height="500" width="500"></canvas>
         <div id = "divScore">0</div>
+        <div id="coordinates">
+            <span>X: <span id="xCoord">0</span></span> | 
+            <span>Y: <span id="yCoord">0</span></span> 
+            <!-- Use Span instead of Div for Inline -->
         <button id = "buttonStart">Start / Reset</button>
     </div>
 
@@ -96,8 +100,14 @@
 
         function moveSnake(){
 
+            const head = { x: snake[0].x + xVelocity,
+                            y: snake[0].y + yVelocity}; 
 
-            
+            // Create a head object and move it forward to give the impression of the snake moving forward
+            // Now add this head objecy to the front of the snake array, via unshift
+            snake.unshift(head);
+            // Now remove the last snake object to give the illusion the snake is following the head
+            snake.pop();
         }
 
         function checkMovement(event){
@@ -133,10 +143,10 @@
                 
             }
             
-            for(let i = 0; i < snake.length; i++){
-                snake[i].x += xVelocity;
-                snake[i].y += yVelocity;
-            }
+            // for(let i = 0; i < snake.length; i++){
+            //     snake[i].x += xVelocity;
+            //     snake[i].y += yVelocity;
+            // }
 
         }
 
@@ -157,10 +167,10 @@
         function resetGame(){
 
             clearTimeout(loopID);
-            let xVelocity = 25;
-            let yVelocity = 0;
+            xVelocity = 25;
+            yVelocity = 0;
 
-            let snake = [
+            snake = [
                 {x:0, y:4*unitSize},
                 {x:0, y:3*unitSize},
                 {x:0, y:2*unitSize},
