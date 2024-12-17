@@ -33,7 +33,7 @@
         <div id = "divScore">0</div>
         <div id="coordinates">
             <span>X: <span id="xCoord">0</span></span> | 
-            <span>Y: <span id="yCoord">0</span></span> 
+            <span>Y: <span id="yCoord">0</span></span> <br>
             <!-- Use Span instead of Div for Inline -->
         <button id = "buttonStart">Start / Reset</button>
     </div>
@@ -43,6 +43,8 @@
         const canvasGame = document.querySelector("#canvasGame");
         const divScore = document.querySelector("#divScore");
         const buttonStart = document.querySelector("#buttonStart");
+        const xCoord = document.querySelector("#xCoord");
+        const yCoord = document.querySelector("#yCoord");
         const ctx = canvasGame.getContext('2d');
 
         let snakeColor = "lightgreen";
@@ -83,12 +85,20 @@
                     clearBoard();
                     moveSnake();
                     drawSnake();
+                    updateCoordinates();
                     checkGameOver();
                     nextTick();
                 }, 75);
             } else {
-                resetGame();
+                // resetGame();
             }
+        }
+
+        function updateCoordinates(){
+
+            xCoord.textContent = snake[0].x;
+            yCoord.textContent = snake[0].y;
+            
         }
 
         function displayGameOver(){
@@ -186,16 +196,16 @@
 
             switch(true){
 
-                case (snake[0].x < 0):
+                case (snake[0].x <= 0):
                     running = false;
                     break;
-                case (snake[0].y < 0):
+                case (snake[0].y <= 0):
                     running = false;
                     break;
-                case (snake[0].x > gameWidth):
+                case (snake[0].x >= gameWidth):
                     running = false;
                     break;
-                case (snake[0].y > gameHeight):
+                case (snake[0].y >= gameHeight):
                     running = false;
                     break;
                 
