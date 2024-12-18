@@ -3,88 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canvas Layout</title>
+    <title>Document</title>
     <style>
-        /* Full viewport grid */
-        .grid-container {
+        #container{
             display: grid;
-            grid-template-rows: 1fr auto 1fr; /* 3 rows: for canvas, coordinates, and the rest */
-            grid-template-columns: 1fr 1fr;  /* 2 columns: left for canvas, right for coordinates */
-            height: 100vh; /* Full viewport height */
-            place-items: center; /* Center items horizontally and vertically */
-            position: relative;
-            gap: 20px; /* Gap between grid items */
+            grid-template-columns: 1fr 1fr 1fr;
+            padding: 2rem;
+            grid-template-rows: 1fr 1fr 1fr;
         }
 
-        #canvas {
-            grid-row: 1; /* Canvas in the first row */
-            grid-column: 1 / span 2; /* Canvas spans both columns, centered */
-            justify-self: center; /* Center horizontally */
-            align-self: center;   /* Center vertically */
-            border: 2px solid #000; /* Optional canvas border */
+        #divid_01 {
+            background-color: blueviolet;
+        }
+        #divid_02 {
+            background-color: burlywood;
+        }
+        #divid_03 {
+            background-color: aquamarine;
+        }
+        #divid_04 {
+            background-color: chartreuse;
+        }
+        #divid_05 {
+            background-color: cornflowerblue;
+        }
+        #divid_06 {
+            background-color: blue;
+        }
+        #divid_07 {
+            background-color:deeppink;
+        }
+        #divid_08 {
+            background-color: green;
+        }
+        #divid_09 {
+            background-color: red;
         }
 
-        #coordinates {
-            grid-row: 1; /* Coordinates in the same row as the canvas */
-            grid-column: 2; /* Right column, next to the canvas */
-            justify-self: start; /* Align coordinates to the left within the right column */
-            margin-left: 20px; /* Slight space between canvas and coordinates */
-            font-family: Arial, sans-serif;
-            font-size: 1rem;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 5px 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        #score {
-            grid-row: 2; /* Row below the canvas */
-            grid-column: 1 / span 2; /* Centered across both columns */
-            text-align: center;
-            font-size: 1.5rem;
-            font-family: Arial, sans-serif;
-        }
-
-        #button-container {
-            grid-row: 3; /* Row below the score */
-            grid-column: 1 / span 2; /* Centered across both columns */
-        }
-
-        #actionButton {
-            padding: 10px 20px;
-            font-size: 1rem;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #actionButton:hover {
-            background-color: #45a049;
-        }
     </style>
 </head>
 <body>
-    <div class="grid-container">
-        <!-- Canvas Element -->
-        <canvas id="canvas" width="500" height="500"></canvas>
-        
-        <!-- Coordinates Display -->
-        <div id="coordinates">
-            <span>X: <span id="xCoord">0</span></span> | 
-            <span>Y: <span id="yCoord">0</span></span>
-        </div>
-        
-        <!-- Score Counter -->
-        <div id="score">
-            Score: <span id="scoreValue">0</span>
-        </div>
-
-        <!-- Button Below Score -->
-        <div id="button-container">
-            <button id="actionButton">Click Me</button>
-        </div>
+    <div id="container">
+        <div id="divid_01">01</div>
+        <div id="divid_02">02</div>
+        <div id="divid_03">03</div>
+        <div id="divid_04">04</div>
+        <div id="divid_05">05</div>
+        <div id="divid_06">06</div>
+        <div id="divid_07">07</div>
+        <div id="divid_08">08</div>
+        <div id="divid_09">09</div>
     </div>
+
+
+    
 </body>
 </html>
