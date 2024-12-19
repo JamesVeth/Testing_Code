@@ -1,61 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        #container{
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            padding: 2rem;
-            grid-template-rows: 1fr 1fr 1fr;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3x3 Grid with Canvas and Score</title>
 
-        #divid_01 {
-            background-color: blueviolet;
-        }
-        #divid_02 {
-            background-color: burlywood;
-        }
-        #divid_03 {
-            background-color: aquamarine;
-        }
-        #divid_04 {
-            background-color: chartreuse;
-        }
-        #divid_05 {
-            background-color: cornflowerblue;
-        }
-        #divid_06 {
-            background-color: blue;
-        }
-        #divid_07 {
-            background-color:deeppink;
-        }
-        #divid_08 {
-            background-color: green;
-        }
-        #divid_09 {
-            background-color: red;
-        }
+  <style>
+    *{
+      font-size: 20px;
+      
+    }
 
-    </style>
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+      grid-template-rows: repeat(3, 1fr);   /* 3 equal rows */
+      width: 80vw;
+      height: 80vh;
+      margin: 20px auto; /* Center the grid on the page */
+    }
+
+    .box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid black;
+    }
+
+    .span-two {
+      grid-column: span 2; /* Merge column 2 and 3 */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    canvas {
+      background-color: white;
+      border: 1px solid black;
+    }
+
+    .score {
+      font-size: 16px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <div id="container">
-        <div id="divid_01">01</div>
-        <div id="divid_02">02</div>
-        <div id="divid_03">03</div>
-        <div id="divid_04">04</div>
-        <div id="divid_05">05</div>
-        <div id="divid_06">06</div>
-        <div id="divid_07">07</div>
-        <div id="divid_08">08</div>
-        <div id="divid_09">09</div>
+  <div class="grid">
+    <div class="box">1</div>
+    <div class="box">2</div>
+    <div class="box">3</div>
+    <div class="box">4</div>
+
+    <div class="box span-two">
+      <canvas id="gameCanvas" width="500" height="500"></canvas>
+      <div class="score">Score: 0</div>
     </div>
-
-
     
+    <div class="box">7</div>
+    <div class="box">8</div>
+    <div class="box">9</div>
+  </div>
 </body>
 </html>
