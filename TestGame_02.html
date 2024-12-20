@@ -63,7 +63,7 @@
 
     <div class="box span-two">
       <canvas id="canvasGame" width="500" height="500"></canvas>
-      <button id ="buttonReset">Reset</button>
+      <button id ="buttonStart">Reset</button>
       <div class="score">Score: 0</div>
     </div>
     
@@ -73,7 +73,7 @@
   </div>
   <script>
     const gameCanvas = document.querySelector("#canvasGame");
-    const buttonReset = document.querySelector("#buttonReset");
+    const buttonReset = document.querySelector("#buttonStart");
     const ctx = gameCanvas.getContext('2d');
 
 
@@ -82,7 +82,10 @@
     const foodColor = "red";
     const boardColor = "white";
 
-    let running = true;
+    let gameWidth = canvasGame.width;
+    let gameHeight = canvasGame.height;
+
+    let running = false;
     let loopID;
 
     let xVelocity = 25;
@@ -114,6 +117,7 @@
     function gameStart(){
 
         running = true;
+        nextTick();
         
     }
 
@@ -128,8 +132,11 @@
 
     function drawSnake (){
         ctx.fillStyle = snakeColor;
-        ctx.fillRect(snake[0].x, snake[0].y, unitSize, unitSize);
-        ctx.strokeRect(snake[0].x, snake[0].y, unitSize, unitSize);
+        snake.forEach(segment=>{
+            ctx.fillRect(segment[0].x, segment[0].y, unitSize, unitSize);
+            ctx.strokeRect(segment[0].x, segment[0].y, unitSize, unitSize);
+
+        });
     }
 
     function changeDirection(event){
@@ -168,21 +175,31 @@
 
     function nextTick() {
         
-        if(running){ loopID = setTimeout(()=>{
-            moveSnake();
-            drawSnake();
-            nextTick();
-        })
+        if(running){ 
+            loopID = setTimeout(()=>{
+                    clearBoard();
+                    moveSnake();
+                    drawSnake();
+                    nextTick();
+                }, 75);
 
         } else {
-            gameOver();
         }
     }
 
     function gameOver(){
         running = false;
+        clearBoard();
+    }
+
+    function clearBoard(){
+
+        ctx.fillStyle = boardColor;
+        ctx.fillRect(0,0,gameWidth,gameHeight);
+        
     }
     
   </script>
+
 </body>
 </html>
