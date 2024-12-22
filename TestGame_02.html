@@ -26,8 +26,9 @@
       justify-content: center;
       border: 1px solid black;
     }
-
-    @media only screen and (max-width: 600px) {
+/*  only screen specifies it's only for screen devices, and not when the page is printed to paper; kinda redundant, but it can be useful */
+/* the bar */
+    @media only screen and (min-width: 600px) {
         body {
             background-color: lightblue;
         }
@@ -85,10 +86,10 @@
     
     let unitSize = 25;
 
-    let colorSnake = "green";
+    let colorSnake = "lightgreen";
     let colorFood = "red";
     let colorBorder = "black";
-    let colorBackground = "brown";
+    let colorBackground = "lightgrey";
 
     let loopID;
 
@@ -144,7 +145,7 @@
                     clearBoard();
                     moveSnake();
                     drawSnake();
-                    //checkGameOver();
+                    checkGameOver();
                     nextTick();
 
                 },75
@@ -161,13 +162,13 @@
 
         switch(true){
 
-            case(snake[0].x <= 0):
+            case(snake[0].x < 0):
                 gameOver();
                 break;
             case(snake[0].x >= gameWidth):
                 gameOver();
                 break;
-            case(snake[0].y <= 0):
+            case(snake[0].y < 0):
                 gameOver();
                 break;
             case(snake[0].y >= gameHeight):
