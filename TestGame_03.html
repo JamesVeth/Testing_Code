@@ -7,22 +7,36 @@
     <style>
 
         #divContainer{
-
+            font-family: Arial, Helvetica, sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: bold;
+            width: 80vw;
             display: grid;
             grid-template-columns: repeat(3,1fr);
             gap: 0.1rem;
+            height: 80vh;
         }
         .divArea{
             border: 0.1rem black solid;
-            padding: 2rem;
             background-clip: padding-box;
+            padding: 1rem;
         }
-        #divSpan{
+        #divCanvas {
             grid-column: span 2;
             font-family: Arial, Helvetica, sans-serif;
-            
+            justify-items: center;
         }
+        #canvasGame{
+            background-color: rgb(88, 142, 189);
+        }
+        @media (min-width: 300px) {
+            #divContainer{
 
+                font-family: 'Courier New', Courier, monospace;
+                grid-template-columns: repeat(2, 1fr);
+                
+            }
+        }
     </style>
 </head>
 <body>
@@ -34,20 +48,34 @@
 
         <div class="divArea" style="background-color: hsl(100, 100%, 50%);">Div_01</div>
         <div class="divArea" style="background-color: hsl(200, 100%, 50%);">Div_02</div>
-        <div class="divArea" style="background-color: hsl(300, 100%, 50%);">Div_03</div>
+        <div class="divArea" style="background-color: hsl(20, 100%, 50%);">Div_03</div>
         <div class="divArea" style="background-color: hsl(400, 100%, 50%);">Div_04</div>
-        <div class="divArea" id = "divSpan" style="background-color: hsl(500, 100%, 50%);">
+        <div class="divArea" id = "divCanvas" style="background-color: hsl(140, 52%, 35%);">
 
-            <canvas width="500" height="500"></canvas>
+            <canvas id = "canvasGame"></canvas>
+            <label id = "labelScore">0</label>
+            <button id = "buttonStart">Restart</button>
 
 
         </div>
         <div class="divArea" style="background-color: hsl(600, 100%, 50%);">Div_06</div>
-        <div class="divArea" style="background-color: hsl(700, 100%, 50%);">Div_07</div>
-        <div class="divArea" style="background-color: hsl(800, 100%, 50%);">Div_08</div>
+        <div class="divArea" style="background-color: hsl(237, 71%, 45%);">Div_07</div>
+        <div class="divArea" style="background-color: hsl(287, 100%, 47%);">Div_08</div>
 
     </div>
+<script>
+    const canvasGame = document.querySelector("#canvasGame");
+    const ctx = canvasGame.getContext('2d');
+    const divCanvas = document.querySelector("#divCanvas");
 
+    ctx.fillStyle = "blue";
+    ctx.fillRect(0,0,50,50);
+
+    canvasGame.width = 100;
+    canvasGame.height = 100;
+    divCanvas.style.width = "80vw";
+    
+</script>
 
     
 </body>
