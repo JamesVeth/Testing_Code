@@ -23,18 +23,35 @@
         }
         #divCanvas {
             grid-column: span 2;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
             font-family: Arial, Helvetica, sans-serif;
-            justify-items: center;
         }
         #canvasGame{
             background-color: rgb(88, 142, 189);
         }
-        @media (min-width: 300px) {
+        /* Remember to use MAX width media query here
+        Max means that when the width has hit a new maximum size
+        In other words <= number is the current max
+        So if we reach 700 in size or drop below it, do the following:
+        1920 wudth > 700, corrct>
+        Resize lower width to 701 <= 700? No: 650> Yes, then apply new layout
+        what about minimum?
+        1920 >= 700> Yes, so this would be applied all the time, which we dont want
+        >= 0 or any low number? Again, ues, which we don't want.
+        */
+        @media (max-width: 700px) {
             #divContainer{
-
                 font-family: 'Courier New', Courier, monospace;
                 grid-template-columns: repeat(2, 1fr);
-                
+            }
+
+            div:nth-child(8){
+                font-family: 'Times New Roman', Times, serif;
+                color: aliceblue;
+                grid-column: span 2;
             }
         }
     </style>
@@ -59,7 +76,7 @@
 
         </div>
         <div class="divArea" style="background-color: hsl(600, 100%, 50%);">Div_06</div>
-        <div class="divArea" style="background-color: hsl(237, 71%, 45%);">Div_07</div>
+        <div class="divArea" style="background-color: hsl(200, 100%, 51%);">Div_07</div>
         <div class="divArea" style="background-color: hsl(287, 100%, 47%);">Div_08</div>
 
     </div>
@@ -71,9 +88,9 @@
     ctx.fillStyle = "blue";
     ctx.fillRect(0,0,50,50);
 
-    canvasGame.width = 100;
-    canvasGame.height = 100;
     divCanvas.style.width = "80vw";
+    canvasGame.width = 350;
+    canvasGame.height = 350;
     
 </script>
 
