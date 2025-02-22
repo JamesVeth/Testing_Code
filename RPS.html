@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <style>
+
+        :root{
+
+            --font-primary: Arial, sans-serif;
+        }
+        
+        body{
+            font-family: var(--font-primary);
+        }
+
+
+        .container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 3rem;
+
+        }
+
+        .choices{
+            margin-bottom: 2rem;
+            background-color: aqua;
+            padding: 1rem;
+            border-radius: 4rem;
+        }
+
+        .choices button {
+            background-color: blue;
+            height: 7rem;
+            width: 7rem;
+            color: aqua;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-inline: 0.5rem;
+        }
+
+    </style>
+</head>
+<body>
+    
+
+    <div class="container">
+
+        <div class="choices">
+            <button onclick="playGame('rock')">ROCK</button>
+            <button onclick="playGame('paper')">PAPER</button>
+            <button onclick="playGame('scissors')">SCISSORS</button>
+        </div>
+
+    <!-- div.container>div.scoreDisplay{Player Score: }>span#playerScore{0}^div.scoreDisplay{Computer Score: }>span#computerScore{0} -->
+        <div class="scoreDisplay">Player Score: <span id="playerScore">0</span></div>
+        <div class="scoreDisplay">Computer Score: <span id="computerScore">0</span></div>
+        
+    </div>
+
+
+
+    <script>
+        const choiceArray = ["Rock", "Paper", "Scissors"];
+
+        
+        function playGame(command){
+
+        }
+
+    </script>
+    
+</body>
+</html>
