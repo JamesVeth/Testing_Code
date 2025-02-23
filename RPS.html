@@ -9,10 +9,14 @@
         :root{
 
             --font-primary: Arial, sans-serif;
+            --primary-accent:aqua;
+
         }
         
         body{
             font-family: var(--font-primary);
+            
+            
         }
 
 
@@ -20,9 +24,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            text-align: center;
             gap: 1rem;
             margin-top: 3rem;
-
         }
 
         .choices{
@@ -32,6 +36,15 @@
             border-radius: 4rem;
         }
 
+        .container .results{
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            align-self: flex-start;
+            margin-left: 3rem;
+
+        }
+
         .choices button {
             background-color: blue;
             height: 7rem;
@@ -39,7 +52,14 @@
             color: aqua;
             border-radius: 50%;
             cursor: pointer;
+            margin-bottom: 0.5rem;
             margin-inline: 0.5rem;
+        }
+
+        .choices button:hover{
+            border: 3px solid orange;
+            background-color: rgb(61, 61, 250);
+            color: white;
         }
 
     </style>
@@ -55,23 +75,190 @@
             <button onclick="playGame('scissors')">SCISSORS</button>
         </div>
 
-    <!-- div.container>div.scoreDisplay{Player Score: }>span#playerScore{0}^div.scoreDisplay{Computer Score: }>span#computerScore{0} -->
-        <div class="scoreDisplay">Player Score: <span id="playerScore">0</span></div>
-        <div class="scoreDisplay">Computer Score: <span id="computerScore">0</span></div>
+        <div class="results">
+            <div>PLAYER: <span id="playerDisplay"></span></div>
+            <div>CPU: <span id="cpuDisplay"></span></div>
+            <div>RESULT: <span id="resultDisplay"></span></div>
+            <div class="scoreDisplay">Player Score: <span id="playerScoreDisplay">0</span></div>
+            <div class="scoreDisplay">Computer Score: <span id="cpuScoreDisplay">0</span></div>
+        </div>
+
         
     </div>
 
 
 
     <script>
-        const choiceArray = ["Rock", "Paper", "Scissors"];
+        const choiceArray = ["rock", "paper", "scissors"];
+        const buttons = document.querySelectorAll(".choices button"); // Get all the buttons
 
+        let playerDisplay = document.querySelector('#playerDisplay');
+        let computerDisplay = document.querySelector('#cpuDisplay');
+        let resultDisplay = document.querySelector('#resultDisplay');
+
+        let playerScoreDisplay = document.querySelector('#playerScoreDisplay');
+        let cpuScoreDisplay = document.querySelector('#cpuScoreDisplay');
+
+        let cpuChoice;
+        let timerId;
+
+        let playerScore = 0;
+        let cpuScore = 0;
         
-        function playGame(command){
 
+
+        function disableButtons(){
+            buttons.forEach(button=>{
+                button.disabled = true;                
+            });
+        }
+
+        function enableButtons(){
+            buttons.forEach(button=>{
+                button.disabled = false;                
+            });
+        }
+
+        function hideButtons(){
+            buttons.forEach(button=>{
+                button.style.display = 'none'
+            });
+        }
+        function showButtons() {
+            buttons.forEach(button => {
+                button.style.display = 'inline-block';  // Show all buttons again
+            });
+        }
+
+        function playGame(playerChoice){
+            
+            // call disable button OUTSIDE of the loop to prevent additional clicks happening while the loop is running
+            disableButtons();
+            hideButtons();
+            timerId = setTimeout(()=>{
+
+                gameLoop(playerChoice);
+                updateScores();
+                enableButtons();
+                showButtons();
+
+            }, 1000);
+        }
+        
+        function gameLoop(playerChoice){
+
+            cpuChoice = choiceArray[Math.floor(Math.random() * 3)];
+            cpuDisplay.textContent = `${cpuChoice}`.toUpperCase();
+
+
+            switch(playerChoice){
+                    case 'rock':
+                        playerDisplay.textContent = `${playerChoice}`.toUpperCase();
+                        checkWinner(playerChoice, cpuChoice);
+                        break;
+
+                    case 'paper':
+                        playerDisplay.textContent = `${playerChoice}`.toUpperCase();
+                        checkWinner(playerChoice, cpuChoice);
+                        break;
+
+                    case 'scissors':
+                        playerDisplay.textContent = `${playerChoice}`.toUpperCase();
+                        checkWinner(playerChoice, cpuChoice);
+                        break;
+                }
+        }
+        
+        function checkWinner(playerChoice, cpuChoice){
+
+            switch(true){
+
+                case (playerChoice == "rock" && cpuChoice == "scissors" || 
+                    playerChoice == "paper" && cpuChoice == "rock"||
+                    playerChoice == "scissors" && cpuChoice == "paper"):
+                    resultDisplay.textContent = "PLAYER WINS!"
+                    playerScore += 1;
+                    break;
+
+                case (playerChoice == "rock" && cpuChoice == "paper" || 
+                    playerChoice == "paper" && cpuChoice == "scissors"||
+                    playerChoice == "scissors" && cpuChoice == "rock"):
+                    resultDisplay.textContent = "CPU WINS!"
+                    cpuScore += 1;
+                    break;
+
+                case (playerChoice == cpuChoice):
+                    resultDisplay.textContent = "IT'S A TIE!"
+                    break;
+                
+            }
+            
+        }
+        
+        function updateScores(){
+
+            playerScoreDisplay.textContent = playerScore;
+            cpuScoreDisplay.textContent = cpuScore;
+            
         }
 
     </script>
     
 </body>
 </html>
+
+
+
+
+
+            <!-- div.container>div.scoreDisplay{Player Score: }>span#playerScore{0}^div.scoreDisplay{Computer Score: }>span#computerScore{0} -->
+
+
+
+            <!-- 
+            
+            let originalButtonStyles = [];
+
+function storeButtonStyles() {
+    buttons.forEach(button => {
+        // Store the entire computed style object
+        originalButtonStyles.push(window.getComputedStyle(button));
+    });
+}
+
+function hideButtons() {
+    buttons.forEach(button => {
+        // Apply a transparent/hidden look without fully removing from DOM
+        button.style.backgroundColor = 'transparent'; // Example of blending
+        button.style.border = 'none';
+        button.style.color = 'transparent';  // Hide text color
+        button.style.opacity = '0';  // Make it fully transparent
+    });
+}
+
+function showButtons() {
+    buttons.forEach((button, index) => {
+        // Apply the stored styles back to the button
+        const storedStyles = originalButtonStyles[index];
+        
+        // Loop over all the styles and apply them back
+        for (let prop of storedStyles) {
+            button.style[prop] = storedStyles[prop];
+        }
+    });
+}
+
+function playGame(playerChoice){
+    storeButtonStyles();  // Store the initial styles
+    disableButtons();     // Disable buttons to prevent spamming
+    hideButtons();        // Make buttons blend into the background
+
+    setTimeout(() => {
+        gameLoop(playerChoice);  // Run the game logic
+        updateScores();           // Update the scores
+        showButtons();            // Restore original styles after 1 second
+        enableButtons();          // Re-enable the buttons
+    }, 1000);  // 1-second delay before proceeding
+}
+            
+            -->
